@@ -1,0 +1,82 @@
+.logo {
+    font-size: 40px;
+}
+
+
+.like-active:hover {
+    transition: all 0.4s ease-in-out;
+    fill: red
+}
+
+.navBar {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+    z-index: 10;
+    /* width: 100%; */
+    /* background-color: #f0f0f0; */
+}
+
+.scroll {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+
+}
+
+
+.navbar-content_logo img {
+    width: 5.5rem;
+    /* margin-right: 1rem; */
+    border-radius: 50%;
+}
+
+.navbar-content_action {
+    margin-right: 260px;
+    width: 250px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between
+}
+
+.exit {
+    width: 30px;
+    height: 30px;
+}
+
+.exit_icon {
+    border: none
+}
+
+.header-links {
+    display: flex;
+    padding-left: 250px;
+}
+
+.header-text-second {
+    padding-left: 250px;
+    margin-right: 80px;
+}
+
+.link {
+    margin-right: 20px;
+    font-weight: 500;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: #0abab5;
+}
+
+.active {
+    cursor: pointer;
+}
