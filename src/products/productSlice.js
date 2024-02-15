@@ -4,6 +4,9 @@ import { getStorageItem, setStorageItem } from '../components/utils/utrils';
 
 const initialState = {
     products,
+    showCart: false,
+    showNavBar: false,
+    showCheckoutModal: false,
     cartProducts: getStorageItem('cartProducts'),
 }
 
@@ -27,14 +30,46 @@ export const productSlice = createSlice({
                 state.cartProducts.push(product);
             }
             setStorageItem('cartProducts', state.cartProducts);
-        }
+        },
+        displayCart: (state) => {
+            state.showCart = !state.showCart;
+        },
+        decreaseCartProductCount: (state, action) => {
+            state.cartProducts.forEach((item) => {
+                if (item.id === action.payload) {
+                    item.count--;
+                }
+            });
+            setStorageItem('cartProducts', state.cartProducts);
+        },
+        increaseCartProductCount: (state, action) => {
+            state.cartProducts.forEach((item) => {
+                if (item.id === action.payload) {
+                    item.count++;
+                }
+            });
+            setStorageItem('cartProducts', state.cartProducts);
+        },
+
+        removeProductFromCart: (state, action) => {
+            state.cartProducts = state.cartProducts.filter(
+                (cp) => cp.id !== action.payload
+            );
+            setStorageItem('cartProducts', state.cartProducts);
+        },
 
     }
 })
 
 export const {
     categoriesCart,
-    addProductToCart
+    addProductToCart,
+    displayCart,
+    removeProductFromCart,
+    increaseCartProductCount,
+    decreaseCartProductCount,
+    displayCheckoutModal,
+    displayNavBar
 } = productSlice.actions;
 
 

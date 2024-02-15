@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from './twilight.png'
+import twilight from './NVIDIA_Share_N1ra9oxd6x-transformed.png'
 import './logo.css';
 import basket from './img/shopping-cart_icon-icons.com_72552.svg'
 import like from './img/like-heart-outline-symbol_icon-icons.com_73226.svg'
@@ -12,10 +13,16 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../../firebase'
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { displayCart } from '../../products/productSlice';
 
 const Logo = () => {
 
     const { currentUser } = useContext(AuthContext)
+
+    const dispatch = useDispatch();
+    const cartProducts = useSelector((store) => store.productsState.cartProducts)
+    const cartCount = cartProducts.reduce((sum, item) => sum + item.count, 0);
 
     const [isScrolled, setIsScrolled] = useState(false)
     // console.log(window.location.pathname)
@@ -25,7 +32,7 @@ const Logo = () => {
     console.log(typeof (currentUrl))
 
     const actionTest = () => {
-        if (currentUrl == 'http://localhost:3000/login') {
+        if (url == 'http://localhost:3000/login') {
             console.log(url)
             return (
                 <div className='header-text-second'>
@@ -43,7 +50,7 @@ const Logo = () => {
                 <div className='header-links'>
                     <Link to='/' className='Home link'>Home</Link>
                     <Link to='/product' className='Products link'>Products</Link>
-                    <Link className='About link'>About</Link>
+                    <Link to='/about' className='About link'>About</Link>
                 </div>
             )
         }
@@ -52,15 +59,16 @@ const Logo = () => {
 
 
     const actionTestSecond = () => {
-        if (currentUrl == 'http://localhost:3000/login') {
+        if (url === '/login') {
             return (
                 <div className='navbar-content_action'>
-                    <Link className='profile active' >
+                    <Link className='profile p-active' >
                         <img src={profileUser} alt="" />
                     </Link>
-                    <Link className='basket active' >
+                    <div onClick={() => dispatch(displayCart())} className='basket basket-active toggle-cart' >
                         <img src={basket} alt="" />
-                    </Link>
+                        <span className='cart-item-count'>{cartCount}</span>
+                    </div>
                     <Link className='like like-active'>
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                             width="40px" height="40px" viewBox="0 0 1280.000000 1280.000000"
@@ -100,9 +108,10 @@ const Logo = () => {
                             </Link>
                         </div>
                     </div>
-                    <Link className='basket active' >
+                    <div onClick={() => dispatch(displayCart())} className='basket basket-active toggle-cart' >
                         <img src={basket} alt="" />
-                    </Link>
+                        <span className='cart-item-count'>{cartCount}</span>
+                    </div>
                     <Link className='like like-active'>
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                             width="40px" height="40px" viewBox="0 0 1280.000000 1280.000000"
@@ -151,7 +160,7 @@ const Logo = () => {
         <div className={isScrolled ? 'navBar scroll' : 'navBar'}>
             {actionTest()}
             <div className='navbar-content_logo'>
-                <img src={logo} alt="" />
+                <img src={twilight} alt="" />
             </div>
             {actionTestSecond()}
             {/* <div className='navbar-content_action'>

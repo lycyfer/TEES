@@ -2,8 +2,8 @@ import model1 from './img/model-demonstrating-earrings-and-ring.jpg'
 import './productList.css'
 import like from './img/klipartz.com.png'
 import SingleProduct from './singleProduct';
-
-import { Link } from 'react-router-dom';
+import { addProductToCart } from '../../products/productSlice';
+import { Link, useParams } from 'react-router-dom';
 
 import { formatType } from '../utils/utrils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ const ProductList = () => {
     const [productType, setProductType] = useState('all');
 
 
-
+    let { id } = useParams
     // Redux hooks
     let dispatch = useDispatch();
     let products = useSelector((store) => store.productsState.products);
@@ -76,10 +76,10 @@ const ProductList = () => {
                     <div className='cart-productList-description'>
                         {description}
                     </div>
-                    <div className='flex-button'>
-                        <button className='cart-productList-button'>Add to Cart</button>
+                    {/* <div className='flex-button'>
+                        <button onClick={() => dispatch(addProductToCart(id))} className='cart-productList-button'>Add to Cart</button>
                         <button className='cart-productList-like'><img src={like} alt="" className='like' /></button>
-                    </div>
+                    </div> */}
                 </div>
             </Link>
         )

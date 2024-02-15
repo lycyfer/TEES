@@ -103,7 +103,7 @@ header {
 .user-logout {
     border: none;
     font-size: 18px;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 80px;
     text-align: center;
     color: black;
@@ -111,8 +111,9 @@ header {
 }
 
 .user-logout:hover {
-    transition: all 0.4s ease-in-out;
-    color: #0abab5;
+    transition: all 400ms ease;
+    color: #fff;
+    background-color: #4db5ff;
 }
 
 .home-info {

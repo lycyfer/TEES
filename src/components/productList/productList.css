@@ -187,7 +187,7 @@
 }
 
 .productList-arrivals:hover {
-    transition: all 0.4s ease-in-out;
+    transition: all 400ms ease;
     box-shadow: 4px 4px 4px 6px rgba(128, 128, 128, 0.2);
 }
 
@@ -241,8 +241,9 @@
 }
 
 .cart-productList-button:hover {
-    transition: all 0.4s ease-in-out;
-    background-color: #0abab5;
+    transition: all 400ms ease;
+    background-color: #4db5ff;
+
 }
 
 .cart-productList-like {
@@ -342,13 +343,16 @@
     background: transparent;
     border-color: transparent;
     letter-spacing: 0.1rem;
-    color: hsl(210, 22%, 49%);
-    ;
+    color: #000;
+
     cursor: pointer;
     transition: all 0.3s linear;
+    /* transition: all 400ms ease; */
+    border-radius: 10px;
 }
 
 .active {
-    background-color: hsl(212, 33%, 89%);
-    border-radius: 10px;
+    background-color: #4db5ff;
+    color: #fff;
+    /* border-radius: 10px; */
 }

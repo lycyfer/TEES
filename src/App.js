@@ -9,6 +9,9 @@ import ProductDetails from './components/productDetails/productDetails';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from './components/context/AuthContext';
+import Basket from './components/basket/basket';
+// import NavBar from './components/navBar/navBar';
+// import About from './components/about/about';
 // import { products } from './products/productsData';
 
 function App() {
@@ -25,8 +28,16 @@ function App() {
   return (
     <div className="container">
       <Logo />
+      <Basket />
       {/* <Home /> */}
+      {/* <Routes>
+        <Route path='/' element={<Logo />} />
+      </Routes>
       <Routes>
+        <Route path='/product' element={<Logo />} />
+      </Routes> */}
+      <Routes>
+
         <Route path='/' element={<ProtectRoute><Main /></ProtectRoute>} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
@@ -34,6 +45,13 @@ function App() {
         <Route path='/product' element={<ProductList />} />
         <Route path='/product/:id' element={<ProductDetails />} />
       </Routes>
+      {/* <Routes>
+        <Route path='/about' element={<NavBar />} />
+      </Routes>
+      <Routes>
+
+        <Route path='/about' element={<About />} />
+      </Routes> */}
     </div>
   );
 }
