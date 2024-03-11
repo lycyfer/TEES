@@ -4,6 +4,19 @@ import { displayCart } from "../../products/productSlice";
 import SingleCartProduct from "../singleCartProduct/singleCartProduct";
 import './basket.css'
 
+
+/**
+ * Компонент Basket, который отвечает за отображение корзины товаров.
+ * @module Basket
+ */
+
+/**
+ * @function
+ * @name Basket
+ * @description Функция-компонент, которая рендерит корзину товаров.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий корзину товаров.
+ */
+
 function Basket() {
     const dispatch = useDispatch();
     const showCart = useSelector((store) => store.productsState.showCart);

@@ -15,7 +15,7 @@
 }
 
 .label span:hover {
-    color: #0abab5;
+    color: #4db5ff;
 }
 
 .sign-up {
@@ -30,6 +30,6 @@
 
 .sign-up:hover {
     transition: all 0.4s ease-in-out;
-    background-color: #0abab5;
+    background-color: #4db5ff;
     color: white;
 }

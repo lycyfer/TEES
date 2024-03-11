@@ -44,15 +44,15 @@ const Login = () => {
                         Twilight Store
                     </span>
                     <span className="title">
-                        Login
+                        Авторизоваться
                     </span>
                     <form onSubmit={handleSubmit} className="form-login">
                         <input className="input" type="email" placeholder="email" />
                         <input className="input" type="text" placeholder="password" />
-                        <button className='sign-in'>Sign in</button>
+                        <button className='sign-in'>Войти</button>
                         {error && <span>Error</span>}
                     </form>
-                    <p className="form-reg">You don`t have an account <Link to='/register' className="reg">Register</Link></p>
+                    <p className="form-reg">У вас нет учетной записи для  <Link to='/register' className="reg">Регистрации</Link></p>
                 </div>
             </div>
         </div>

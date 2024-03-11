@@ -11,11 +11,31 @@ import Add from '../img/addAvatar.png'
 import './register.css'
 import { useState } from 'react'
 
+/**
+ * Компонент Register, который отвечает за регистрацию пользователя.
+ * @module Register
+ */
+
+/**
+ * @function
+ * @name Register
+ * @description Функция-компонент, которая рендерит форму регистрации.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий форму регистрации.
+ */
+
 const Register = () => {
 
     const [err, setErr] = useState(false)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+
+    /**
+     * @function
+     * @name handleSubmit
+     * @description Обработчик события отправки формы.
+     * @param {Object} e - Объект события, содержащий информацию о событии.
+     * @returns {Promise<void>} Возвращает промис, который выполняется после обработки отправки формы.
+     */
 
     const handleSubmit = async (e) => {
         setLoading(true)
@@ -59,7 +79,7 @@ const Register = () => {
         <div className="form-container">
             <div className="form-wrapper">
                 <span className="logo-form">Twilight Store</span>
-                <span className="title">Register</span>
+                <span className="title">Регистрация</span>
                 <form onSubmit={handleSubmit} className='form-login'>
                     <input className='input' required type="text" placeholder="display name" />
                     <input className='input' required type="email" placeholder="email" />
@@ -67,14 +87,14 @@ const Register = () => {
                     <input className='input' required style={{ display: "none" }} type="file" id="file" />
                     <label htmlFor="file" className='label'>
                         <img src={Add} alt="" className='avatar-img' />
-                        <span className='avatar'>Add an avatar</span>
+                        <span className='avatar'>Добавить аватар</span>
                     </label>
-                    <button disabled={loading} className='sign-up'>Sign up</button>
+                    <button disabled={loading} className='sign-up'>Регистрация</button>
                     {loading && "Uploading and compressing the image please wait..."}
                     {err && <span>Something went wrong</span>}
                 </form>
                 <p className='form-reg'>
-                    You do have on account <Link to='/login' className='reg'>Login</Link>
+                    У вас есть аккаунт <Link to='/login' className='reg'>Авторизоваться</Link>
                 </p>
             </div>
         </div>

@@ -3,6 +3,19 @@ import { store } from "../../redux/store"
 import './singleCartProduct.css'
 import { decreaseCartProductCount, increaseCartProductCount, removeProductFromCart } from "../../products/productSlice";
 
+/**
+ * Компонент SingleCartProduct, который отвечает за отображение информации о товаре в корзине.
+ * @module SingleCartProduct
+ */
+
+/**
+ * @function
+ * @name SingleCartProduct
+ * @description Функция-компонент, которая рендерит информацию о товаре в корзине.
+ * @param {string} id - Идентификатор товара.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий информацию о товаре в корзине.
+ */
+
 const SingleCartProduct = ({ id }) => {
     const cartProducts = useSelector((store) => store.productsState.products);
     const cartProduct = cartProducts.find((item) => item.id === id)

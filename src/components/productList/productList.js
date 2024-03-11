@@ -9,6 +9,20 @@ import { formatType } from '../utils/utrils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 
+
+/**
+ * Компонент ProductList, который отвечает за отображение списка товаров.
+ * @module ProductList
+ */
+
+/**
+ * @function
+ * @name ProductList
+ * @description Функция-компонент, которая рендерит список товаров.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий список товаров.
+ */
+
+
 const ProductList = () => {
 
 
@@ -33,6 +47,14 @@ const ProductList = () => {
     })
     let testId = products.filter((item) => item.id)
     console.log(testId)
+
+    /**
+     * @function
+     * @name changeTypeProduct
+     * @description Функция, которая изменяет тип товара.
+     * @param {string} name - Имя типа товара.
+     */
+
     const changeTypeProduct = (name) => {
         // console.log(name)
         setProductType(name)

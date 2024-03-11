@@ -9,7 +9,17 @@ import { auth } from '../../firebase'
 import { AuthContext } from '../context/AuthContext';
 
 
+/**
+ * Компонент Home, который отвечает за главную страницу приложения.
+ * @module Home
+ */
 
+/**
+ * @function
+ * @name Home
+ * @description Функция-компонент, которая рендерит главную страницу приложения.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий главную страницу приложения.
+ */
 
 const Home = () => {
 
@@ -27,7 +37,7 @@ const Home = () => {
                             <b className='logo'>Twilight</b>
                         </span>
                         <p>
-                            <b>women's accessories store</b>
+                            <b>магазин женских аксессуаров</b>
                         </p>
                     </div>
                     {/* <div className='user-block'>
@@ -41,12 +51,14 @@ const Home = () => {
                             </button>
                         </div>
                     </div> */}
+
+
                 </div>
                 <div className='content-main'>
-                    <h1>All women's jewelry</h1>
-                    <p>A truly luxurious piece of jewelry for the most beautiful women</p>
+                    <h1>Все женские украшения</h1>
+                    <p>По-настоящему роскошное украшение для самых красивых женщин</p>
                     <Link to='/product' className='content-main_button'>
-                        Shop how
+                        Покупайте сейчас
                     </Link>
                 </div>
             </div>

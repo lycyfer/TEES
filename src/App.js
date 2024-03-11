@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import { AuthContext } from './components/context/AuthContext';
 import Basket from './components/basket/basket';
 // import NavBar from './components/navBar/navBar';
-// import About from './components/about/about';
+import About from './components/about/about';
 // import { products } from './products/productsData';
 
 function App() {
@@ -44,6 +44,7 @@ function App() {
 
         <Route path='/product' element={<ProductList />} />
         <Route path='/product/:id' element={<ProductDetails />} />
+        <Route path='/about' element={<About />} />
       </Routes>
       {/* <Routes>
         <Route path='/about' element={<NavBar />} />

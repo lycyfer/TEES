@@ -16,6 +16,19 @@ import { AuthContext } from '../context/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayCart } from '../../products/productSlice';
 
+
+/**
+ * Компонент Logo, который отвечает за отображение логотипа и навигационных ссылок.
+ * @module Logo
+ */
+
+/**
+ * @function
+ * @name Logo
+ * @description Функция-компонент, которая рендерит логотип и навигационные ссылки.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий логотип и навигационные ссылки.
+ */
+
 const Logo = () => {
 
     const { currentUser } = useContext(AuthContext)
@@ -31,32 +44,85 @@ const Logo = () => {
     console.log(url)
     console.log(typeof (currentUrl))
 
-    const actionTest = () => {
-        if (url == 'http://localhost:3000/login') {
-            console.log(url)
-            return (
-                <div className='header-text-second'>
-                    <span>
-                        <b className='logo'>Twilight</b>
-                    </span>
-                    <p>
-                        <b>women's accessories store</b>
-                    </p>
-                </div>
-            )
-        } else {
-            console.log(url)
-            return (
-                <div className='header-links'>
-                    <Link to='/' className='Home link'>Home</Link>
-                    <Link to='/product' className='Products link'>Products</Link>
-                    <Link to='/about' className='About link'>About</Link>
-                </div>
-            )
-        }
 
+    /**
+     * @function
+     * @name actionTest
+     * @description Функция, которая определяет, какие навигационные ссылки отображать на основе текущего URL.
+     * @returns {JSX.Element} Возвращает JSX элемент, представляющий навигационные ссылки.
+     */
+
+    // const actionTest = () => {
+    //     if (url == 'http://localhost:3000/login') {
+    //         console.log(url)
+    //         return (
+    //             <div className='header-text-second'>
+    //                 <span>
+    //                     <b className='logo'>Twilight</b>
+    //                 </span>
+    //                 <p>
+    //                     <b>магазин женских аксессуаров</b>
+    //                 </p>
+    //             </div>
+    //         )
+    //     } else {
+    //         console.log(url)
+    //         return (
+    //             <div className='header-links'>
+    //                 <Link to='/' className='Home link'>Главная</Link>
+    //                 <Link to='/product' className='Products link'>Продукты</Link>
+    //                 <Link to='/about' className='About link'>О нас</Link>
+    //             </div>
+    //         )
+    //     }
+
+    // }
+    const actionTest = () => {
+        switch (window.location.pathname) {
+            case '/login':
+                return (
+                    <div className='header-text-second'>
+                        <span>
+                            <b className='logo'>Twilight</b>
+                        </span>
+                        <p>
+                            <b>магазин женских аксессуаров</b>
+                        </p>
+                    </div>
+                )
+            case '/signup':
+                return (
+                    <div className='header-text-second'>
+                        <span>
+                            <b className='logo'>Twilight</b>
+                        </span>
+                        <p>
+                            <b>Регистрация</b>
+                        </p>
+                    </div>
+                )
+            default:
+                return (
+                    <div className='header-text-second'>
+                        {/* <span>
+                            <b className='logo'>Twilight</b>
+                        </span> */}
+                        <p>
+                            <Link to='/' className='Home link'>Главная</Link>
+                            <Link to='/product' className='Products link'>Продукты</Link>
+                            <Link to='/about' className='About link'>О нас</Link>
+                        </p>
+                    </div>
+                )
+        }
     }
 
+    /**
+ * @function
+ * @name actionTestSecond
+ * @description Функция, которая определяет, какие действия отображать на основе текущего URL.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий действия пользователя.
+ */
 
     const actionTestSecond = () => {
         if (url === '/login') {

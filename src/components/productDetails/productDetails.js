@@ -7,6 +7,19 @@ import like from '../productList/img/klipartz.com.png'
 import './productDetails.css'
 import PageHero from '../page/pageHero';
 
+
+/**
+ * Компонент ProductDetails, который отвечает за отображение подробной информации о товаре.
+ * @module ProductDetails
+ */
+
+/**
+ * @function
+ * @name ProductDetails
+ * @description Функция-компонент, которая рендерит подробную информацию о товаре.
+ * @returns {JSX.Element} Возвращает JSX элемент, представляющий подробную информацию о товаре.
+ */
+
 const ProductDetails = () => {
 
     let dispatch = useDispatch()
@@ -50,6 +63,16 @@ const ProductDetails = () => {
     console.log(name)
     console.log(product)
 
+
+
+    /**
+     * @function
+     * @name size
+     * @description Функция, которая возвращает размеры товара в зависимости от его типа.
+     * @param {string} type - Тип товара.
+     * @returns {JSX.Element} Возвращает JSX элемент, представляющий размеры товара.
+     */
+
     const size = (type) => {
         switch (type) {
             case 'Ring':
@@ -89,6 +112,38 @@ const ProductDetails = () => {
 
         }
     }
+
+
+    /**
+     * @function
+     * @name moreInfo
+     * @description Функция, которая возвращает дополнительную информацию о товаре в зависимости от его типа.
+     * @param {string} type - Тип товара.
+     * @param {string} model - Модель товара.
+     * @param {string} productMaterial - Материал изделия товара.
+     * @param {string} brand - Бренд товара.
+     * @param {string} collection - Коллекция товара.
+     * @param {string} insert - Вставка товара.
+     * @param {string} countryOfManufacture - Страна производства товара.
+     * @param {string} productWeight - Вес товара.
+     * @param {string} mechanism - Механизм товара.
+     * @param {string} forWhom - Для кого предназначен товар.
+     * @param {string} braceletMaterial - Материал браслета товара.
+     * @param {string} caseMaterial - Материал корпуса товара.
+     * @param {string} typeCoverage - Тип покрытия товара.
+     * @param {string} diameter - Диаметр товара.
+     * @param {string} glass - Стекло товара.
+     * @param {string} colorBelt - Цвет ремня товара.
+     * @param {string} beltWidth - Ширина ремня товара.
+     * @param {string} waterProtection - Защита от воды товара.
+     * @param {string} grant - Грант товара.
+     * @param {string} timeDisplay - Время отображения товара.
+     * @param {string} markup - Маркер товара.
+     * @param {string} typeMechanism - Тип механизма товара.
+     * @param {string} chainWidth - Ширина цепи товара.
+     * @param {string} weaving - Ведение товара.
+     * @returns {JSX.Element} Возвращает JSX элемент, представляющий дополнительную информацию о товаре.
+     */
 
     const moreInfo = (
         type,
