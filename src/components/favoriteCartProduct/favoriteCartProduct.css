@@ -1,0 +1,101 @@
+.favorite {
+    margin-top: 150px;
+}
+
+.line {
+    margin-top: 20px;
+    width: 100%;
+    height: 3px;
+    background-color: black;
+    border-radius: 100px;
+}
+
+
+.favoriteCartProduct {
+    width: 560px;
+    min-height: 280px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: none;
+}
+
+.favoriteCartProduct-cart-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.favoriteCartProduct-item-name {
+    color: rgb(0, 0, 0);
+    font-family: Calibri, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    /* line-height: 0; */
+    text-align: start;
+    padding-top: 10px;
+    text-decoration: none;
+}
+
+.favoriteCartProduct-item-desc {
+    font-weight: 400;
+    font-family: Calibri, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    width: 300px;
+    padding-top: 10px;
+}
+
+.favoriteCartProduct-item-price {
+    padding-top: 20px;
+    font-family: Calibri, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.favoriteCartProduct-addButton {
+    display: flex;
+    align-items: end;
+    margin-top: 10px;
+}
+
+.favoriteCartProduct-button {
+    min-width: 110px;
+    height: 40px;
+    flex-shrink: 0;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.25) 4px 4px 20px 0px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    /* margin-left: 5px; */
+    border: none;
+    border-radius: 10px;
+    transition: all 400ms ease;
+}
+
+.favoriteCartProduct-button:hover {
+    /* transition: all 400ms ease; */
+    box-shadow: rgb(77, 181, 255) 4px 4px 20px;
+    background: rgb(255, 255, 255);
+    /* border-radius: 4px 0px 0px 4px; */
+}
+
+.favoriteCartProduct-item-img {
+    width: 220px;
+    margin-left: 20px;
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+.like-favorite {
+    width: 40px;
+    margin-top: 10px;
+    fill: red;
+    cursor: pointer;
+}

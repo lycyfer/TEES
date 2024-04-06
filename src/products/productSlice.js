@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { products } from './productsData';
+// import { products } from './productsData';
 import { getStorageItem, setStorageItem } from '../components/utils/utrils';
+import { fetchProductsAsync } from './productActions';
 
 /**
  * @constant
@@ -14,11 +15,16 @@ import { getStorageItem, setStorageItem } from '../components/utils/utrils';
  */
 
 const initialState = {
-    products,
+    favoriteType: 'all',
+    favoriteProducts: [],
+    products: [],
+    status: 'idle',
+    error: null,
     showCart: false,
     showNavBar: false,
     showCheckoutModal: false,
     cartProducts: getStorageItem('cartProducts'),
+    favoriteProducts: getStorageItem('favoriteProducts')
 }
 
 /**
@@ -54,19 +60,45 @@ export const productSlice = createSlice({
          */
 
         addProductToCart: (state, action) => {
-            const product = state.products.find((p) => p.id === action.payload);
+            const { productId, size } = action.payload;
+            const product = state.products.find((p) => p.id === productId);
             let cartProduct = state.cartProducts.find(
-                (cp) => cp.id === action.payload
+                (cp) => cp.id === productId && cp.size === size
             );
             if (cartProduct) {
                 cartProduct.count++;
             } else {
-                cartProduct = product;
-                cartProduct['count'] = 1;
-                state.cartProducts.push(product);
+                cartProduct = { ...product, count: 1, size };
+                state.cartProducts.push(cartProduct);
             }
             setStorageItem('cartProducts', state.cartProducts);
         },
+        setFavoriteType: (state, action) => {
+            state.favoriteType = action.payload;
+        },
+        // addProductToFavorites: (state, action) => {
+        //     const productId = action.payload;
+        //     const product = state.products.find((p) => p.id === productId);
+        //     if (product) {
+        //         let favoriteProduct = state.favoriteProducts.find(
+        //             (fp) => fp.id === productId
+        //         );
+        //         // console.log(favoriteProduct)
+        //         if (favoriteProduct) {
+        //             // console.log(favoriteProduct)
+        //             favoriteProduct.count++;
+        //         } else {
+        //             // console.log(favoriteProduct)
+
+        //             favoriteProduct = { ...product, count: 1 };
+        //             state.favoriteProducts.push(favoriteProduct);
+        //         }
+        //         setStorageItem('favoriteProducts', state.favoriteProducts);
+        //     } else {
+        //         console.error(`Product with id ${productId} not found in state.products`);
+        //     }
+        // },
+
 
         /**
          * @function
@@ -88,28 +120,16 @@ export const productSlice = createSlice({
          */
 
         decreaseCartProductCount: (state, action) => {
-            state.cartProducts.forEach((item) => {
-                if (item.id === action.payload) {
-                    item.count--;
-                }
-            });
+            const index = action.payload;
+            if (state.cartProducts[index].count > 1) {
+                state.cartProducts[index].count--;
+            }
             setStorageItem('cartProducts', state.cartProducts);
         },
 
-        /**
-         * @function
-         * @name increaseCartProductCount
-         * @description Функция-редюсер, которая увеличивает количество продукта в корзине.
-         * @param {Object} state - Текущее состояние.
-         * @param {Object} action - Действие.
-         */
-
         increaseCartProductCount: (state, action) => {
-            state.cartProducts.forEach((item) => {
-                if (item.id === action.payload) {
-                    item.count++;
-                }
-            });
+            const index = action.payload;
+            state.cartProducts[index].count++;
             setStorageItem('cartProducts', state.cartProducts);
         },
 
@@ -121,25 +141,62 @@ export const productSlice = createSlice({
          * @param {Object} action - Действие.
          */
 
-        removeProductFromCart: (state, action) => {
-            state.cartProducts = state.cartProducts.filter(
-                (cp) => cp.id !== action.payload
-            );
-            setStorageItem('cartProducts', state.cartProducts);
+
+        addProductToCart: (state, action) => {
+            const { productId, size } = action.payload;
+            const product = state.products.find((p) => p.id === productId);
+            if (product) {
+                // Создаем новый товар с уникальным индексом
+                const newCartProduct = { ...product, size, count: 1, index: state.cartProducts.length };
+                state.cartProducts.push(newCartProduct);
+                setStorageItem('cartProducts', state.cartProducts);
+            } else {
+                console.error(`Product with id ${productId} not found in state.products`);
+            }
         },
 
-    }
+        removeProductFromCart: (state, action) => {
+            const indexToRemove = action.payload;
+
+            state.cartProducts = state.cartProducts.filter((cp, index) => index !== indexToRemove);
+            setStorageItem('cartProducts', state.cartProducts);
+        },
+        removeProductFromFavorite: (state, action) => {
+            state.favoriteProducts = state.favoriteProducts.filter(
+                (cp) => cp.id !== action.payload
+            );
+            setStorageItem('favoriteProducts', state.favoriteProducts);
+        }
+
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchProductsAsync.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchProductsAsync.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.products = action.payload;
+            })
+            .addCase(fetchProductsAsync.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            });
+    },
 })
 
 export const {
     categoriesCart,
     addProductToCart,
+    addProductToFavorites,
     displayCart,
     removeProductFromCart,
     increaseCartProductCount,
     decreaseCartProductCount,
     displayCheckoutModal,
-    displayNavBar
+    displayNavBar,
+    removeProductFromFavorite,
+    setFavoriteType
 } = productSlice.actions;
 
 

@@ -7,12 +7,17 @@ import Register from './components/auth/register/register'
 import ProductList from './components/productList/productList'
 import ProductDetails from './components/productDetails/productDetails';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from './components/context/AuthContext';
+import FavoriteCartProduct from './components/favoriteCartProduct/favoriteCartProduct';
+import FavoriteProduct from './components/favoriteProduct/favoriteProduct';
 import Basket from './components/basket/basket';
 // import NavBar from './components/navBar/navBar';
 import About from './components/about/about';
+import ProductContainer from './components/productDetails/productContainer';
 // import { products } from './products/productsData';
+// import { products } from './products/productsData';
+
 
 function App() {
 
@@ -43,8 +48,9 @@ function App() {
         <Route path='/register' element={<Register />} />
 
         <Route path='/product' element={<ProductList />} />
-        <Route path='/product/:id' element={<ProductDetails />} />
+        <Route path='/product/:id' element={<ProductContainer />} />
         <Route path='/about' element={<About />} />
+        <Route path='/favorite' element={<FavoriteProduct />} />
       </Routes>
       {/* <Routes>
         <Route path='/about' element={<NavBar />} />

@@ -1,6 +1,13 @@
 const formatType = (type) => {
-    let caoTypeName = type[0].toUpperCase() + type.slice(1);
-    return caoTypeName;
+    // Check if type is defined and is a string
+    if (type && typeof type === 'string') {
+        let caoTypeName = type.charAt(0).toUpperCase() + type.slice(1);
+        return caoTypeName;
+    } else {
+        // Handle the case where type is undefined or not a string
+        // You can return an empty string, throw an error, or handle it in another way
+        return '';
+    }
 };
 const formatPrice = (price) => {
     let formattedPrice = new Intl.NumberFormat('en-US', {
@@ -9,22 +16,26 @@ const formatPrice = (price) => {
     }).format((price / 100).toFixed(2));
     return formattedPrice;
 };
-const getStorageItem = (item) => {
-    let storageItem = localStorage.getItem(item);
-    if (storageItem) {
-        storageItem = JSON.parse(storageItem);
-    } else {
-        storageItem = [];
+const getStorageItem = (key) => {
+    try {
+        return JSON.parse(localStorage.getItem(key)) || [];
+    } catch (error) {
+        console.error('Error getting data from localStorage', error);
+        return [];
     }
-    return storageItem;
 };
-const setStorageItem = (name, item) => {
-    localStorage.setItem(name, JSON.stringify(item));
+const setStorageItem = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
 };
+
+// const setStorageItemSecond = (key, value) => {
+//     localStorage.setItem(key, JSON.stringify(value));
+// };
 
 export {
     formatType,
     formatPrice,
     getStorageItem,
-    setStorageItem
+    setStorageItem,
+
 }

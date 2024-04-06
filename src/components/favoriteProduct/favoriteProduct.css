@@ -1,0 +1,41 @@
+.favorite-cart_items {
+    /* margin-top: 40px; */
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-around; */
+    /* align-items: center; */
+}
+
+.favorite-item-filter {
+    margin-top: 40px;
+    width: 200px;
+    margin-right: 50px;
+}
+
+.favorite-list {
+    display: flex;
+}
+
+.type_filter_favorite {
+    text-align: left;
+    width: 200px;
+    display: block;
+    margin: 0.25em 0;
+    padding: 0.25rem;
+    text-transform: capitalize;
+    background: transparent;
+    border-color: transparent;
+    letter-spacing: 0.1rem;
+    color: #000;
+
+    cursor: pointer;
+    transition: all 0.3s linear;
+    /* transition: all 400ms ease; */
+    border-radius: 10px;
+}
+
+.active_favorite {
+    background-color: #4db5ff;
+    color: #fff;
+    /* border-radius: 10px; */
+}

@@ -7,9 +7,8 @@ import { Link, useParams } from 'react-router-dom';
 
 import { formatType } from '../utils/utrils';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-
-
+import { useState, useEffect } from 'react';
+import { fetchProductsAsync } from '../../products/productActions';
 /**
  * Компонент ProductList, который отвечает за отображение списка товаров.
  * @module ProductList
@@ -26,7 +25,6 @@ import { useState } from 'react';
 const ProductList = () => {
 
 
-
     const [priceInputVal, setPriceInputVal] = useState(50);
     const [searchVal, setSearchVal] = useState('')
     const [productType, setProductType] = useState('all');
@@ -35,18 +33,21 @@ const ProductList = () => {
     let { id } = useParams
     // Redux hooks
     let dispatch = useDispatch();
-    let products = useSelector((store) => store.productsState.products);
-
+    const products = useSelector((state) => state.productsState.products);
+    const status = useSelector((state) => state.productsState.status);
+    const error = useSelector((state) => state.productsState.error);
+    console.log(products)
     // Filter products
     // let product = products.filter((item) => item.fields.visible === 'product');
 
-    let product = products.filter((item) => item.id)
-
+    let product = products.filter((item) => item.id && item.fields.visible === 'product')
+    let filteredProducts = products.filter((product) => product.fields.categories === false);
+    // console.log(product)
     const filterProduct = product.filter((item) => {
         return (item.fields.price / 100).toFixed(2) < Number(priceInputVal)
     })
     let testId = products.filter((item) => item.id)
-    console.log(testId)
+    // console.log(testId)
 
     /**
      * @function
@@ -54,7 +55,9 @@ const ProductList = () => {
      * @description Функция, которая изменяет тип товара.
      * @param {string} name - Имя типа товара.
      */
-
+    useEffect(() => {
+        dispatch(fetchProductsAsync());
+    }, [dispatch]);
     const changeTypeProduct = (name) => {
         // console.log(name)
         setProductType(name)
@@ -63,7 +66,7 @@ const ProductList = () => {
     const type = ['all', ...new Set(products.map((item) => item.fields.type))]
     // console.log(type)
 
-    product = productType === 'all' ? products.filter((item) => item.fields.visible === 'product') : products.filter((item) => item.fields.type === productType)
+    product = productType === 'all' ? products.filter((item) => item.fields.visible === 'product') : products.filter((item) => item.fields.type === productType && item.fields.visible === 'product')
 
     // console.log(product)
 
@@ -106,6 +109,118 @@ const ProductList = () => {
             </Link>
         )
     });
+
+    // const [priceInputVal, setPriceInputVal] = useState(50);
+    // const [searchVal, setSearchVal] = useState('')
+    // const [productType, setProductType] = useState('all');
+
+
+    // let { id } = useParams
+    // let dispatch = useDispatch();
+    // let products = useSelector((store) => store.productsState.products);
+
+    // console.log(products)
+
+    // let product = products.filter((item) => item.id)
+
+    // const filterProduct = product.filter((item) => {
+    //     return (item.fields.price / 100).toFixed(2) < Number(priceInputVal)
+    // })
+    // let testId = products.filter((item) => item.id)
+
+    // const changeTypeProduct = (name) => {
+    //     setProductType(name)
+    // }
+
+    // const type = ['all', ...new Set(products.map((item) => item.fields.type))]
+    // product = productType === 'all' ? products.filter((item) => item.fields.visible === 'product') : products.filter((item) => item.fields.type === productType)
+    // const testType = type.map((item, count) => {
+    //     const btnClass = item === productType ? 'type_filter active' : 'type_filter'
+    //     return (
+    //         <article className='productList-type'>
+    //             <button onClick={() => changeTypeProduct(item)} className={btnClass} key={count}>
+    //                 {formatType(item)}
+    //             </button>
+    //         </article>
+    //     )
+    // })
+    // const dispatch = useDispatch();
+    // const products = useSelector((state) => state.productsState.products);
+    // const status = useSelector((state) => state.productsState.status);
+    // const error = useSelector((state) => state.productsState.error);
+    // console.log(products)
+    // console.log(products[1].id)
+    // console.log(status)
+    // console.log(error)
+    // const [priceInputVal, setPriceInputVal] = useState(50);
+    // const [searchVal, setSearchVal] = useState('');
+    // const [productType, setProductType] = useState('all');
+
+    // useEffect(() => {
+    //     dispatch(fetchProductsAsync());
+    // }, [dispatch]);
+
+    // const changeTypeProduct = (name) => {
+    //     setProductType(name);
+    // };
+
+    // const filteredProducts = products.filter((item) => {
+    //     return (item.price / 100).toFixed(2) < Number(priceInputVal);
+    // });
+
+    // const filteredByTypeProducts = productType === 'all'
+    //     ? filteredProducts
+    //     : filteredProducts.filter((item) => item.type === productType);
+
+    // const types = ['all', ...new Set(products.map((item) => item.type))];
+    // const testType = types.map((item, count) => {
+    //     const btnClass = item === productType ? 'type_filter active' : 'type_filter';
+    //     return (
+    //         <article className='productList-type' key={count}>
+    //             <button onClick={() => changeTypeProduct(item)} className={btnClass}>
+    //                 {formatType(item)}
+    //             </button>
+    //         </article>
+    //     );
+    // });
+
+    // const productList = filteredByTypeProducts.map((item) => {
+    //     if (!item || !item.fields || !item.fields.price) {
+
+    //         return null;
+    //     }
+
+    //     const { name, price, image, description } = item.fields;
+
+    //     return (
+    //         <Link to={`/product/${item.id}`} className='productList-arrivals' key={item.id}>
+    //             <div className='cart-productList'>
+    //                 <img src={image} alt="" className='cart-productList-image' />
+    //             </div>
+    //             <p className='cart-productList-name'>{name}</p>
+    //             <p className='cart-productList-price'>
+    //                 {price} ₽
+    //             </p>
+    //             <div className='cart-arrivals_more'>
+    //                 <div className='cart-productList-description'>
+    //                     {description}
+    //                 </div>
+    //                 {/* <div className='flex-button'>
+    //             <button onClick={() => dispatch(addProductToCart(id))} className='cart-productList-button'>Add to Cart</button>
+    //             <button className='cart-productList-like'><img src={like} alt="" className='like' /></button>
+    //           </div> */}
+    //             </div>
+    //         </Link>
+    //     );
+    // });
+
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (status === 'failed') {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div className="productList">

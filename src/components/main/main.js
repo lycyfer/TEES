@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { store } from '../../redux/store'
 import Home from '../home/home'
 import like from './klipartz.com.png'
+import { Link } from 'react-router-dom';
 
 /**
  * Основной компонент, отображающий категории товаров и новые поступления.
@@ -32,12 +33,12 @@ const Main = (props) => {
     const listCategories = productCategory.map((item) => {
         const { name, image } = item.fields;
         return (
-            <div className='cart-categories'>
+            <Link to='/product' className='cart-categories'>
                 <div className="cart-categories_item">
                     <img src={image} alt="" className='cart-categories_item-image' />
                 </div>
                 <p className='cart-categories_item-name'>{name}</p>
-            </div>
+            </Link>
         )
     });
 

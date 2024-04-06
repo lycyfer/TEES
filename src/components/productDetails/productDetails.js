@@ -1,33 +1,20 @@
 import './productDetails.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { addProductToCart } from '../../products/productSlice';
+import { addProductToCart, addProductToFavorites } from '../../products/productSlice';
 import { useLocation } from 'react-router-dom';
 import like from '../productList/img/klipartz.com.png'
 import './productDetails.css'
 import PageHero from '../page/pageHero';
+import { useState, useEffect } from 'react';
+import { fetchProductsAsync } from '../../products/productActions';
 
+const ProductDetails = ({ fields, currentSize, setCurrentSize, handleAddToCart }) => {
 
-/**
- * Компонент ProductDetails, который отвечает за отображение подробной информации о товаре.
- * @module ProductDetails
- */
+    const dispatch = useDispatch();
+    const { id } = useParams();
+    const location = useLocation();
 
-/**
- * @function
- * @name ProductDetails
- * @description Функция-компонент, которая рендерит подробную информацию о товаре.
- * @returns {JSX.Element} Возвращает JSX элемент, представляющий подробную информацию о товаре.
- */
-
-const ProductDetails = () => {
-
-    let dispatch = useDispatch()
-    let { id } = useParams()
-    let location = useLocation();
-    console.log(id)
-    const products = useSelector((store) => store.productsState.products);
-    const product = products.find((item) => item.id === id)
     const {
         name,
         sizes,
@@ -58,27 +45,13 @@ const ProductDetails = () => {
         typeMechanism,
         chainWidth,
         weaving,
-
-    } = product.fields
-    console.log(name)
-    console.log(product)
-
-
-
-    /**
-     * @function
-     * @name size
-     * @description Функция, которая возвращает размеры товара в зависимости от его типа.
-     * @param {string} type - Тип товара.
-     * @returns {JSX.Element} Возвращает JSX элемент, представляющий размеры товара.
-     */
-
+    } = fields;
     const size = (type) => {
         switch (type) {
             case 'Ring':
                 return <div>
                     {sizes.map((size) => (
-                        <button key={size} className='size-block'>
+                        <button onClick={() => setCurrentSize(size)} key={size} className={`size-block ${currentSize === size ? 'selected' : ''}`}>
                             {size}
                         </button>
                     ))}
@@ -86,7 +59,7 @@ const ProductDetails = () => {
             case 'Chain':
                 return <div>
                     {sizes.map((size) => (
-                        <button key={size} className='size-block'>
+                        <button onClick={() => setCurrentSize(size)} key={size} className={`size-block ${currentSize === size ? 'selected' : ''}`}>
                             {size}
                         </button>
                     ))}
@@ -94,7 +67,7 @@ const ProductDetails = () => {
             case 'Bracelet':
                 return <div>
                     {sizes.map((size) => (
-                        <button key={size} className='size-block'>
+                        <button onClick={() => setCurrentSize(size)} key={size} className={`size-block ${currentSize === size ? 'selected' : ''}`}>
                             {size}
                         </button>
                     ))}
@@ -102,49 +75,13 @@ const ProductDetails = () => {
             case 'Necklace':
                 return <div>
                     {sizes.map((size) => (
-                        <button key={size} className='size-block'>
+                        <button onClick={() => setCurrentSize(size)} key={size} className={`size-block ${currentSize === size ? 'selected' : ''}`}>
                             {size}
                         </button>
                     ))}
                 </div>
-
-
-
         }
     }
-
-
-    /**
-     * @function
-     * @name moreInfo
-     * @description Функция, которая возвращает дополнительную информацию о товаре в зависимости от его типа.
-     * @param {string} type - Тип товара.
-     * @param {string} model - Модель товара.
-     * @param {string} productMaterial - Материал изделия товара.
-     * @param {string} brand - Бренд товара.
-     * @param {string} collection - Коллекция товара.
-     * @param {string} insert - Вставка товара.
-     * @param {string} countryOfManufacture - Страна производства товара.
-     * @param {string} productWeight - Вес товара.
-     * @param {string} mechanism - Механизм товара.
-     * @param {string} forWhom - Для кого предназначен товар.
-     * @param {string} braceletMaterial - Материал браслета товара.
-     * @param {string} caseMaterial - Материал корпуса товара.
-     * @param {string} typeCoverage - Тип покрытия товара.
-     * @param {string} diameter - Диаметр товара.
-     * @param {string} glass - Стекло товара.
-     * @param {string} colorBelt - Цвет ремня товара.
-     * @param {string} beltWidth - Ширина ремня товара.
-     * @param {string} waterProtection - Защита от воды товара.
-     * @param {string} grant - Грант товара.
-     * @param {string} timeDisplay - Время отображения товара.
-     * @param {string} markup - Маркер товара.
-     * @param {string} typeMechanism - Тип механизма товара.
-     * @param {string} chainWidth - Ширина цепи товара.
-     * @param {string} weaving - Ведение товара.
-     * @returns {JSX.Element} Возвращает JSX элемент, представляющий дополнительную информацию о товаре.
-     */
-
     const moreInfo = (
         type,
         model,
@@ -499,15 +436,33 @@ const ProductDetails = () => {
                     <h2 className='productDetails-name'>{name}</h2>
                     <div className='productDetails-type'>{type}</div>
                     <div className='productDetails-price'>{price} ₽</div>
-
-
                     <div className='productDetails-size-block'>
-                        <p className='size'>Размер</p>
-                        {size(type)}
+                        {sizes && sizes.length > 0 && (
+                            <>
+                                <p className='size'>Размер</p>
+                                {size(type)}
+                            </>
+                        )}
                     </div>
                     <div className='addButton'>
-                        <button onClick={() => dispatch(addProductToCart(id))} className='productDetails-button'>Добавить в корзину</button>
-                        <button className='productDetails-like'><img src={like} alt="" className='like2' /></button>
+                        {sizes && sizes.length > 0 ? (
+                            <button
+                                onClick={handleAddToCart}
+                                className='productDetails-button'
+                                disabled={!currentSize}
+                            >
+                                {currentSize ? 'Добавить в корзину' : 'Выбери размер'}
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => dispatch(addProductToCart({ productId: id }))}
+                                className='productDetails-button'
+                            >
+                                Добавить в корзину
+                            </button>
+                        )}
+
+                        <button onClick={() => dispatch(addProductToFavorites(id, currentSize))} className='productDetails-like'><img src={like} alt="" className='like2' /></button>
                     </div>
                     <p className='desc'>Описание</p>
                     <div className='productDetails-desc'>

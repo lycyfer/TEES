@@ -87,6 +87,11 @@
     transition: all 400ms ease
 }
 
+.selected {
+    background-color: #000;
+    color: #fff;
+}
+
 .size-block:hover {
     background-color: #000;
     color: #fff;
