@@ -1,259 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from './twilight.png'
-import twilight from './NVIDIA_Share_N1ra9oxd6x-transformed.png'
-import './logo.css';
-import basket from './img/shopping-cart_icon-icons.com_72552.svg'
-import like from './img/like-heart-outline-symbol_icon-icons.com_73226.svg'
-import likeTest from './img/1993288.svg'
-import exit from './img/4213459-common-door-exit-logout-out-signout_115411.svg'
-import profileUser from './img/1499345621-contact_85338.svg'
-
-import { signOut } from 'firebase/auth'
-import { auth } from '../../firebase'
+import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useDispatch, useSelector } from 'react-redux';
-import { displayCart } from '../../products/productSlice';
+import apiRequest from '../../lib/apiRequest';
+import noAvatar from "./img/no-avatar.png"
 
-
-/**
- * Компонент Logo, который отвечает за отображение логотипа и навигационных ссылок.
- * @module Logo
- */
-
-/**
- * @function
- * @name Logo
- * @description Функция-компонент, которая рендерит логотип и навигационные ссылки.
- * @returns {JSX.Element} Возвращает JSX элемент, представляющий логотип и навигационные ссылки.
- */
+import "./logo.css"
 
 const Logo = () => {
+    const { updateUser, currentUser } = useContext(AuthContext)
 
-    const { currentUser } = useContext(AuthContext)
 
-    const dispatch = useDispatch();
-    const cartProducts = useSelector((store) => store.productsState.cartProducts)
-    const cartCount = cartProducts.reduce((sum, item) => sum + item.count, 0);
+    const navigate = useNavigate()
+
+    const handleLogout = async () => {
+        try {
+            await apiRequest.post("/logout")
+            updateUser(null);
+            navigate("/");
+            localStorage.removeItem("user")
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    console.log(currentUser)
+
+
 
     const [isScrolled, setIsScrolled] = useState(false)
-    // console.log(window.location.pathname)
     var url = window.location.pathname
     const currentUrl = window.location.href;
-    // console.log(url)
-    // console.log(typeof (currentUrl))
+    const [hasProductsInCart, setHasProductsInCart] = useState(false);
+    const [hasProductsInLike, setHasProductsInLike] = useState(false);
 
-
-    /**
-     * @function
-     * @name actionTest
-     * @description Функция, которая определяет, какие навигационные ссылки отображать на основе текущего URL.
-     * @returns {JSX.Element} Возвращает JSX элемент, представляющий навигационные ссылки.
-     */
-
-    // const actionTest = () => {
-    //     if (url == 'http://localhost:3000/login') {
-    //         console.log(url)
-    //         return (
-    //             <div className='header-text-second'>
-    //                 <span>
-    //                     <b className='logo'>Twilight</b>
-    //                 </span>
-    //                 <p>
-    //                     <b>магазин женских аксессуаров</b>
-    //                 </p>
-    //             </div>
-    //         )
-    //     } else {
-    //         console.log(url)
-    //         return (
-    //             <div className='header-links'>
-    //                 <Link to='/' className='Home link'>Главная</Link>
-    //                 <Link to='/product' className='Products link'>Продукты</Link>
-    //                 <Link to='/about' className='About link'>О нас</Link>
-    //             </div>
-    //         )
-    //     }
-
-    // }
-    const actionTest = () => {
-        switch (window.location.pathname) {
-            case '/login':
-                return (
-                    <div className='header-text-second'>
-                        <span>
-                            <b className='logo'>Twilight</b>
-                        </span>
-                        <p>
-                            <b>магазин женских аксессуаров</b>
-                        </p>
-                    </div>
-                )
-            case '/signup':
-                return (
-                    <div className='header-text-second'>
-                        <span>
-                            <b className='logo'>Twilight</b>
-                        </span>
-                        <p>
-                            <b>Регистрация</b>
-                        </p>
-                    </div>
-                )
-            default:
-                return (
-                    <div className='header-text-second'>
-                        {/* <span>
-                            <b className='logo'>Twilight</b>
-                        </span> */}
-                        <p>
-                            <Link to='/' className='Home link'>Главная</Link>
-                            <Link to='/product' className='Products link'>Продукты</Link>
-                            <Link to='/about' className='About link'>О нас</Link>
-                        </p>
-                    </div>
-                )
-        }
-    }
-
-    /**
- * @function
- * @name actionTestSecond
- * @description Функция, которая определяет, какие действия отображать на основе текущего URL.
- * @returns {JSX.Element} Возвращает JSX элемент, представляющий действия пользователя.
- */
-
-    const actionTestSecond = () => {
-        if (url === '/login') {
-            return (
-                <div className='navbar-content_action'>
-                    <Link className='profile p-active' >
-                        <img src={profileUser} alt="" />
-                    </Link>
-                    <div className='basket basket-active toggle-cart' >
-                        <img src={basket} alt="" />
-                        {/* <span className='cart-item-count'>{cartCount}</span> */}
-                    </div>
-                    <div className='like like-active'>
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                            width="40px" height="40px" viewBox="0 0 1280.000000 1280.000000"
-                            preserveAspectRatio="xMidYMid meet">
-                            <metadata>
-                                Created by potrace 1.15, written by Peter Selinger 2001-2017
-                            </metadata>
-                            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                                stroke="none">
-                                <path d="M3820 10864 c-238 -21 -540 -87 -750 -164 -252 -92 -562 -265 -764
--428 -39 -31 -122 -106 -185 -167 -429 -417 -689 -967 -750 -1589 -16 -159
--14 -484 5 -649 83 -762 416 -1452 1058 -2197 123 -143 467 -491 656 -665 322
--295 676 -588 1355 -1120 799 -626 1062 -851 1385 -1181 244 -250 418 -476
-522 -679 24 -47 45 -85 48 -85 3 0 24 38 48 85 104 203 278 429 522 679 323
-330 586 555 1385 1181 918 719 1287 1036 1715 1471 283 289 463 499 655 769
-404 567 637 1147 700 1748 17 170 20 485 4 643 -61 622 -321 1172 -750 1589
--63 61 -146 136 -185 167 -202 163 -512 336 -764 428 -153 56 -384 114 -561
-141 -208 33 -591 33 -794 1 -275 -43 -500 -114 -740 -232 -576 -284 -993 -786
--1197 -1442 -18 -59 -35 -108 -38 -108 -3 0 -20 49 -38 108 -204 656 -621
-1158 -1197 1442 -351 173 -673 249 -1085 255 -118 1 -235 1 -260 -1z"/>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            )
-        } else {
-            if (currentUser) {
-                return (
-                    <div className='navbar-content_action'>
-                        <div className='user-block'>
-                            <div className='user'>
-                                <div className='user-info'>
-                                    {currentUser.photoURL && (
-                                        <img src={currentUser.photoURL} alt="" className='user-img' />
-                                    )}
-                                    <span className='user-name'>{currentUser.displayName}</span>
-                                </div>
-                                <Link to='/login' className='user-logout' onClick={() => signOut(auth)}>
-                                    Logout
-                                </Link>
-                            </div>
-                        </div>
-                        <div onClick={() => dispatch(displayCart())} className='basket basket-active toggle-cart' >
-                            <img src={basket} alt="" />
-                            <span className='cart-item-count'>{cartCount}</span>
-                        </div>
-                        <Link to='/favorite' className='like like-active'>
-                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                width="40px" height="40px" viewBox="0 0 1280.000000 1280.000000"
-                                preserveAspectRatio="xMidYMid meet">
-                                <metadata>
-                                    Created by potrace 1.15, written by Peter Selinger 2001-2017
-                                </metadata>
-                                <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                                    stroke="none">
-                                    <path d="M3820 10864 c-238 -21 -540 -87 -750 -164 -252 -92 -562 -265 -764
-    -428 -39 -31 -122 -106 -185 -167 -429 -417 -689 -967 -750 -1589 -16 -159
-    -14 -484 5 -649 83 -762 416 -1452 1058 -2197 123 -143 467 -491 656 -665 322
-    -295 676 -588 1355 -1120 799 -626 1062 -851 1385 -1181 244 -250 418 -476
-    522 -679 24 -47 45 -85 48 -85 3 0 24 38 48 85 104 203 278 429 522 679 323
-    330 586 555 1385 1181 918 719 1287 1036 1715 1471 283 289 463 499 655 769
-    404 567 637 1147 700 1748 17 170 20 485 4 643 -61 622 -321 1172 -750 1589
-    -63 61 -146 136 -185 167 -202 163 -512 336 -764 428 -153 56 -384 114 -561
-    141 -208 33 -591 33 -794 1 -275 -43 -500 -114 -740 -232 -576 -284 -993 -786
-    -1197 -1442 -18 -59 -35 -108 -38 -108 -3 0 -20 49 -38 108 -204 656 -621
-    1158 -1197 1442 -351 173 -673 249 -1085 255 -118 1 -235 1 -260 -1z"/>
-                                </g>
-                            </svg>
-                        </Link>
-                    </div>
-                )
-            } else {
-                <div className='navbar-content_action'>
-                    <div className='user-block'>
-                        <div className='user'>
-                            {/* <div className='user-info'>
-                                {currentUser.photoURL && (
-                                    <img src={currentUser.photoURL} alt="" className='user-img' />
-                                )}
-                                <span className='user-name'>{currentUser.displayName}</span>
-                            </div> */}
-                            <Link to='/login' className='user-logout' onClick={() => signOut(auth)}>
-                                Logout
-                            </Link>
-                        </div>
-                    </div>
-                    <div className='basket basket-active toggle-cart' >
-                        <img src={basket} alt="" />
-                        {/* <span className='cart-item-count'>{cartCount}</span> */}
-                    </div>
-                    <div className='like like-active'>
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                            width="40px" height="40px" viewBox="0 0 1280.000000 1280.000000"
-                            preserveAspectRatio="xMidYMid meet">
-                            <metadata>
-                                Created by potrace 1.15, written by Peter Selinger 2001-2017
-                            </metadata>
-                            <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                                stroke="none">
-                                <path d="M3820 10864 c-238 -21 -540 -87 -750 -164 -252 -92 -562 -265 -764
-    -428 -39 -31 -122 -106 -185 -167 -429 -417 -689 -967 -750 -1589 -16 -159
-    -14 -484 5 -649 83 -762 416 -1452 1058 -2197 123 -143 467 -491 656 -665 322
-    -295 676 -588 1355 -1120 799 -626 1062 -851 1385 -1181 244 -250 418 -476
-    522 -679 24 -47 45 -85 48 -85 3 0 24 38 48 85 104 203 278 429 522 679 323
-    330 586 555 1385 1181 918 719 1287 1036 1715 1471 283 289 463 499 655 769
-    404 567 637 1147 700 1748 17 170 20 485 4 643 -61 622 -321 1172 -750 1589
-    -63 61 -146 136 -185 167 -202 163 -512 336 -764 428 -153 56 -384 114 -561
-    141 -208 33 -591 33 -794 1 -275 -43 -500 -114 -740 -232 -576 -284 -993 -786
-    -1197 -1442 -18 -59 -35 -108 -38 -108 -3 0 -20 49 -38 108 -204 656 -621
-    1158 -1197 1442 -351 173 -673 249 -1085 255 -118 1 -235 1 -260 -1z"/>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            }
-
-        }
-    }
-
+    console.log(hasProductsInCart)
     useEffect(() => {
         const handleScroll = () => {
             if (window.pageYOffset > 0) {
@@ -269,88 +50,178 @@ const Logo = () => {
         }
 
     })
+    useEffect(() => {
+        const checkCartProducts = async () => {
+            try {
+                const response = await apiRequest.get(`basket/test/${currentUser.id}`);
+                console.log(response)
+                setHasProductsInCart(response.data.items.length > 0);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (currentUser) {
+            checkCartProducts();
+        }
+    }, [currentUser]);
+    useEffect(() => {
+        const checkLikeProducts = async () => {
+            try {
+                const response = await apiRequest.get(`favorite/${currentUser.id}/saved-products`);
+                console.log(response)
+                setHasProductsInLike(response.data.length > 0);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (currentUser) {
+            checkLikeProducts();
+        }
+    }, [currentUser]);
 
     return (
         <div className={isScrolled ? 'navBar scroll' : 'navBar'}>
-            {actionTest()}
-            <div className='navbar-content_logo'>
-                {/* <img src={twilight} alt="" /> */}
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                    width="88pt" height="82pt" viewBox="0 0 202.000000 189.000000"
-                    preserveAspectRatio="xMidYMid meet">
+            <div className='test-navbar'>
+                <div className='header-text-second'>
+                    <span>
+                        <b className='logo'>
+                            <svg width="250" height="100" viewBox="0 0 1096 453" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2041_1647)" filter="url(#filter0_dd_2041_1647)">
+                                    <g filter="url(#filter1_d_2041_1647)">
+                                        <path d="M788.693 116.203V116.155L699.582 24.8218L640.865 116.203H788.693Z" fill="black" />
+                                        <path d="M433.273 153.216L508.03 433L582.786 153.216H433.273Z" fill="black" />
+                                        <path d="M570.579 116.155L506.686 28.1421L444.846 116.155V116.203H570.579V116.155Z" fill="black" />
+                                        <path d="M606.004 101.897L662.449 14.0547H542.283L606.004 101.897Z" fill="black" />
+                                        <path d="M471.311 14.0547H353.635L409.836 101.506L471.311 14.0547Z" fill="black" />
+                                        <path d="M227.365 116.155V116.203H375.217L316.501 24.8218L227.365 116.155Z" fill="black" />
+                                        <path d="M224.436 153.216L468.528 428.606L394.943 153.216H224.436Z" fill="black" />
+                                        <path d="M547.58 428.606L791.647 153.216H621.139L547.58 428.606Z" fill="black" />
+                                    </g>
+                                    <path d="M480.091 277V183.909H499.773V260.773H539.682V277H480.091Z" fill="white" />
+                                    <path d="M376.376 179.182V281H354.849V179.182H376.376Z" fill="white" />
+                                    <path d="M662.376 179.182V281H640.849V179.182H662.376Z" fill="white" />
+                                    <path d="M4.97159 203.93V186.182H88.5938V203.93H57.4219V288H36.1435V203.93H4.97159Z" fill="black" />
+                                    <path d="M125.768 288L96.6349 186.182H120.151L137.004 256.928H137.849L156.443 186.182H176.578L195.122 257.077H196.017L212.871 186.182H236.386L207.253 288H186.273L166.884 221.43H166.088L146.749 288H125.768Z" fill="black" />
+                                    <path d="M840.364 219.094C839.668 216.674 838.69 214.536 837.43 212.68C836.171 210.791 834.63 209.2 832.807 207.908C831.017 206.582 828.962 205.571 826.642 204.875C824.355 204.179 821.82 203.831 819.036 203.831C813.832 203.831 809.258 205.124 805.314 207.709C801.403 210.294 798.354 214.056 796.166 218.994C793.979 223.9 792.885 229.899 792.885 236.991C792.885 244.084 793.962 250.116 796.116 255.088C798.271 260.06 801.32 263.855 805.264 266.473C809.208 269.058 813.865 270.351 819.234 270.351C824.107 270.351 828.266 269.489 831.713 267.766C835.193 266.009 837.845 263.54 839.668 260.358C841.524 257.176 842.452 253.414 842.452 249.072L846.827 249.719H820.577V233.511H863.183V246.338C863.183 255.287 861.294 262.976 857.516 269.406C853.737 275.803 848.534 280.741 841.905 284.222C835.276 287.669 827.686 289.392 819.135 289.392C809.589 289.392 801.204 287.287 793.979 283.078C786.753 278.836 781.119 272.82 777.075 265.031C773.065 257.209 771.06 247.929 771.06 237.19C771.06 228.937 772.253 221.58 774.639 215.116C777.059 208.62 780.439 203.118 784.781 198.611C789.123 194.103 794.178 190.673 799.945 188.32C805.712 185.966 811.959 184.79 818.688 184.79C824.455 184.79 829.824 185.635 834.795 187.325C839.767 188.982 844.175 191.336 848.02 194.385C851.898 197.434 855.063 201.063 857.516 205.273C859.968 209.449 861.543 214.056 862.239 219.094H840.364Z" fill="black" />
+                                    <path d="M879.849 288V186.182H901.376V228.192H945.077V186.182H966.554V288H945.077V245.94H901.376V288H879.849Z" fill="black" />
+                                    <path d="M980.972 203.93V186.182H1064.59V203.93H1033.42V288H1012.14V203.93H980.972Z" fill="black" />
+                                </g>
+                                <defs>
+                                    <filter id="filter0_dd_2041_1647" x="-4" y="0" width="1104" height="461" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="4" />
+                                        <feGaussianBlur stdDeviation="2" />
+                                        <feComposite in2="hardAlpha" operator="out" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2041_1647" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="4" />
+                                        <feGaussianBlur stdDeviation="2" />
+                                        <feComposite in2="hardAlpha" operator="out" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                                        <feBlend mode="normal" in2="effect1_dropShadow_2041_1647" result="effect2_dropShadow_2041_1647" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_2041_1647" result="shape" />
+                                    </filter>
+                                    <filter id="filter1_d_2041_1647" x="224.436" y="14.0547" width="576.212" height="427.945" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dx="8" dy="8" />
+                                        <feGaussianBlur stdDeviation="0.5" />
+                                        <feComposite in2="hardAlpha" operator="out" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2041_1647" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2041_1647" result="shape" />
+                                    </filter>
+                                    <clipPath id="clip0_2041_1647">
+                                        <rect width="1096" height="453" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </b>
+                    </span>
+                </div>
+                <div className='logo-flex-box'>
 
-                    <g transform="translate(0.000000,189.000000) scale(0.100000,-0.100000)"
-                        fill="#000000" stroke="none">
-                        <path d="M891 1679 c-2 -49 -22 -88 -49 -97 l-27 -9 26 -13 c31 -14 49 -47 50
--93 1 -28 2 -27 10 12 9 46 33 81 56 81 7 0 13 5 13 10 0 6 -6 10 -13 10 -23
-0 -47 35 -56 81 -6 29 -9 35 -10 18z"/>
-                        <path d="M1308 1537 c-10 -95 -38 -154 -82 -172 -20 -8 -45 -15 -56 -15 -33 0
--23 -17 14 -24 38 -7 81 -37 98 -69 6 -12 17 -58 24 -102 6 -44 12 -69 13 -56
-1 13 6 54 12 90 14 78 53 125 112 136 43 8 41 20 -6 29 -66 12 -97 71 -119
-226 -2 14 -7 -5 -10 -43z"/>
-                        <path d="M461 1568 c-1 -16 -10 -37 -22 -49 l-21 -21 21 -14 c12 -9 21 -27 22
--42 l1 -27 9 30 c5 16 16 36 26 42 15 12 16 14 1 26 -9 6 -21 28 -26 47 -10
-33 -10 33 -11 8z"/>
-                        <path d="M647 1584 c-4 -4 -7 -21 -7 -38 0 -17 -7 -76 -15 -131 -28 -182 -77
--243 -228 -281 -40 -10 -63 -20 -52 -22 11 -2 49 -13 84 -24 78 -25 131 -71
-160 -137 21 -49 51 -207 51 -269 0 -66 17 -21 24 63 14 165 51 256 124 305 41
-27 114 54 172 62 18 3 7 8 -35 17 -179 39 -229 108 -258 354 -6 60 -15 105
--20 101z"/>
-                        <path d="M1023 1312 c-8 -20 -21 -36 -35 -40 l-22 -5 23 -8 c12 -5 27 -23 34
--41 l11 -33 6 30 c3 17 15 34 28 41 l22 11 -24 11 c-16 7 -26 21 -28 39 l-3
-28 -12 -33z"/>
-                        <path d="M1452 1060 c-10 -17 -10 -24 0 -39 13 -18 14 -18 25 5 6 13 7 24 3
-24 -5 0 -10 7 -12 15 -2 12 -6 11 -16 -5z"/>
-                        <path d="M1147 1030 c-3 -14 -9 -42 -12 -62 -6 -37 -43 -78 -71 -78 -8 0 -14
--4 -14 -10 0 -5 6 -10 14 -10 29 0 67 -44 72 -85 9 -66 17 -73 25 -22 10 62
-33 96 69 104 38 7 38 19 0 26 -38 8 -60 43 -69 109 -6 42 -9 48 -14 28z"/>
-                        <path d="M494 936 c-6 -14 -6 -28 1 -42 l11 -22 10 22 c6 14 6 28 -1 42 l-11
-22 -10 -22z"/>
-                        <path d="M901 895 c0 -12 -6 -26 -13 -33 -9 -9 -9 -12 0 -12 7 0 12 -10 12
--22 0 -21 2 -20 15 6 9 17 12 32 6 35 -5 3 -11 15 -14 26 -5 20 -5 20 -6 0z"/>
-                        <path d="M370 790 c0 -11 -9 -28 -20 -37 -19 -17 -19 -17 0 -30 11 -8 20 -21
-20 -29 0 -8 5 -14 10 -14 6 0 10 6 10 14 0 8 9 21 21 30 l21 14 -21 11 c-12 7
--21 20 -21 31 0 10 -4 22 -10 25 -5 3 -10 -3 -10 -15z"/>
-                        <path d="M1421 729 c-1 -38 -14 -60 -46 -77 -17 -10 -17 -11 -3 -12 23 0 48
--38 49 -75 1 -26 2 -24 12 15 8 29 20 48 34 56 l23 11 -24 11 c-18 8 -27 22
--31 49 -10 56 -13 62 -14 22z"/>
-                        <path d="M807 703 c-4 -22 -12 -33 -24 -33 -15 0 -14 -2 4 -15 12 -8 24 -25
-26 -38 l4 -22 2 22 c0 12 11 29 23 37 18 13 19 16 6 16 -11 0 -21 12 -26 33
-l-8 32 -7 -32z"/>
-                        <path d="M1061 369 c-37 -14 -50 -39 -51 -91 0 -35 5 -53 20 -68 22 -22 26
--23 87 -24 l43 -1 0 38 c0 20 -4 37 -10 37 -5 0 -10 -13 -10 -29 0 -22 -6 -30
--25 -35 -67 -17 -113 79 -69 143 14 19 24 22 60 19 45 -3 47 5 4 15 -14 3 -36
-1 -49 -4z"/>
-                        <path d="M323 363 l37 -4 0 -90 c0 -58 4 -88 10 -84 6 3 10 44 10 90 l0 84 33
-4 c17 2 -4 4 -48 4 -44 0 -63 -2 -42 -4z"/>
-                        <path d="M460 363 c0 -21 52 -173 59 -173 5 0 17 29 26 65 10 36 21 68 25 70
-3 2 15 -28 25 -66 11 -39 23 -73 27 -75 4 -3 19 35 34 83 14 48 28 91 31 96 2
-4 0 7 -4 7 -5 0 -17 -31 -28 -70 -11 -38 -22 -70 -26 -70 -3 0 -14 29 -24 65
--9 36 -21 68 -26 70 -4 3 -18 -26 -30 -65 -12 -40 -25 -68 -29 -63 -3 4 -15
-36 -25 71 -10 34 -22 62 -27 62 -4 0 -8 -3 -8 -7z"/>
-                        <path d="M720 281 c0 -50 5 -93 10 -96 6 -4 10 28 10 89 0 57 -4 96 -10 96 -6
-0 -10 -36 -10 -89z"/>
-                        <path d="M800 275 l0 -95 50 0 c28 0 50 5 50 10 0 6 -18 10 -40 10 l-40 0 0
-85 c0 50 -4 85 -10 85 -6 0 -10 -38 -10 -95z"/>
-                        <path d="M940 275 c0 -57 4 -95 10 -95 6 0 10 38 10 95 0 57 -4 95 -10 95 -6
-0 -10 -38 -10 -95z"/>
-                        <path d="M1220 274 c0 -61 4 -93 10 -89 6 3 10 24 10 46 l0 39 50 0 50 0 0
--39 c0 -22 5 -43 10 -46 6 -4 10 28 10 89 0 57 -4 96 -10 96 -5 0 -10 -20 -10
--45 l0 -45 -50 0 -50 0 0 45 c0 25 -4 45 -10 45 -6 0 -10 -39 -10 -96z"/>
-                        <path d="M1428 363 l32 -4 0 -84 c0 -46 5 -87 10 -90 6 -4 10 26 10 84 l0 90
-33 4 c17 2 -2 4 -43 4 -41 0 -60 -2 -42 -4z"/>
-                    </g>
-                </svg>
+                    <a href='/' className=' linkLogo'>Главная</a>
+                    {currentUser ? (<a href='/product' className=' linkLogo'>Продукты</a>) : (<div></div>)}
+                    <a href='/about' className=' linkLogo'>О нас</a>
+
+
+                    {currentUser ? (
+                        <div className='flex-blox-test'>
+                            <>
+                                <a href={`/basket/${currentUser.id}`} className='linkBasket '><svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.5 9.5L18.7896 6.89465C18.5157 5.89005 18.3787 5.38775 18.0978 5.00946C17.818 4.63273 17.4378 4.34234 17.0008 4.17152C16.5619 4 16.0413 4 15 4M4.5 9.5L5.2104 6.89465C5.48432 5.89005 5.62128 5.38775 5.90221 5.00946C6.18199 4.63273 6.56216 4.34234 6.99922 4.17152C7.43808 4 7.95872 4 9 4" stroke="#fff" stroke-width="1.5" />
+                                    <path d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4C15 4.55228 14.5523 5 14 5H10C9.44772 5 9 4.55228 9 4Z" stroke="#fff" stroke-width="1.5" />
+                                    <path d="M8 13V17" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M16 13V17" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M12 13V17" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M3.864 16.4552C4.40967 18.6379 4.68251 19.7292 5.49629 20.3646C6.31008 21 7.435 21 9.68486 21H14.3155C16.5654 21 17.6903 21 18.5041 20.3646C19.3179 19.7292 19.5907 18.6379 20.1364 16.4552C20.9943 13.0234 21.4233 11.3075 20.5225 10.1538C19.6217 9 17.853 9 14.3155 9H9.68486C6.14745 9 4.37875 9 3.47791 10.1538C2.94912 10.831 2.87855 11.702 3.08398 13" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
+                                </svg></a>
+                            </>
+                            <>
+                                <a href={`/favorite/${currentUser.id}/saved-products`} className='likeBasket'><svg className='svgLike' width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg></a>
+                            </>
+                        </div>
+                    ) : (<div />)}
+                </div>
             </div>
-            {actionTestSecond()}
-            {/* <div className='navbar-content_action'>
-                <Link className='basket active' >
-                    <img src={basket} alt="" />
-                </Link>
-                <Link className='like active'>
-                    <img src={like} alt="" />
-                </Link>
-            </div> */}
+            {currentUser ? (
+                <div className='user-test-block'>
+                    <div className="user">
+                        <img
+                            src={currentUser.avatar || noAvatar}
+                            alt=""
+                            className='user-img-test'
+                        />
+                        <span className='user-name'>{currentUser.username}</span>
+                        <a href="/profile" className="profile">
+                            <span>Профиль</span>
+
+                        </a>
+                        <div className='user-logout-test' onClick={handleLogout}>
+                            <svg fill="#fff" height="25px" width="25px" version="1.1" id="Capa_1"
+                                viewBox="0 0 471.2 471.2" >
+                                <g>
+                                    <g>
+                                        <path d="M227.619,444.2h-122.9c-33.4,0-60.5-27.2-60.5-60.5V87.5c0-33.4,27.2-60.5,60.5-60.5h124.9c7.5,0,13.5-6,13.5-13.5
+			s-6-13.5-13.5-13.5h-124.9c-48.3,0-87.5,39.3-87.5,87.5v296.2c0,48.3,39.3,87.5,87.5,87.5h122.9c7.5,0,13.5-6,13.5-13.5
+			S235.019,444.2,227.619,444.2z"/>
+                                        <path d="M450.019,226.1l-85.8-85.8c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1l62.8,62.8h-273.9c-7.5,0-13.5,6-13.5,13.5
+			s6,13.5,13.5,13.5h273.9l-62.8,62.8c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.8-85.8
+			C455.319,239.9,455.319,231.3,450.019,226.1z"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div className='wallet-block'>
+                            <div className='wallet'>
+                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.5008 14.1502H16.5098M19 4.00098H6.2C5.0799 4.00098 4.51984 4.00098 4.09202 4.21896C3.71569 4.41071 3.40973 4.71667 3.21799 5.093C3 5.52082 3 6.08087 3 7.20098V16.801C3 17.9211 3 18.4811 3.21799 18.909C3.40973 19.2853 3.71569 19.5912 4.09202 19.783C4.51984 20.001 5.07989 20.001 6.2 20.001H17.8C18.9201 20.001 19.4802 20.001 19.908 19.783C20.2843 19.5912 20.5903 19.2853 20.782 18.909C21 18.4811 21 17.9211 21 16.801V11.201C21 10.0809 21 9.52082 20.782 9.093C20.5903 8.71667 20.2843 8.41071 19.908 8.21896C19.4802 8.00098 18.9201 8.00098 17.8 8.00098H7M16.9508 14.1502C16.9508 14.3987 16.7493 14.6002 16.5008 14.6002C16.2523 14.6002 16.0508 14.3987 16.0508 14.1502C16.0508 13.9017 16.2523 13.7002 16.5008 13.7002C16.7493 13.7002 16.9508 13.9017 16.9508 14.1502Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div className='balance'>
+                                    Баланс: {currentUser.balance}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            ) : (
+                <div className='authBlock'>
+                    <a href="/login">Войти</a>
+                    <a href="/register" className="register">
+                        Регистрация
+                    </a>
+                </div>
+
+            )
+            }
         </div >
 
     )

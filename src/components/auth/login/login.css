@@ -1,6 +1,6 @@
 .form-container {
     /* margin-top: 20px; */
-    height: 100vh;
+    height: 840px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,34 +37,22 @@
     gap: 15px;
 }
 
-.input {
 
-    border-bottom: 1px solid white;
-    border-radius: 10px;
-    padding: 15px;
-    width: 300px;
-    border: none;
-
-}
-
-.input::placeholder {
-    color: rgb(175, 175, 175);
-}
 
 .sign-in {
     border: none;
-    background-color: white;
+    background-color: #4db5ff;
     width: 100%;
     border-radius: 10px;
     padding: 10px;
     font-weight: bold;
-    color: #000;
+    color: white;
+    transition: all 0.4s ease-in-out;
 }
 
 .sign-in:hover {
     transition: all 0.4s ease-in-out;
-    background-color: #4db5ff;
-    color: white;
+    scale: 1.05;
 }
 
 .form-reg {
@@ -74,6 +62,10 @@
     text-decoration: none;
 }
 
+.span_err {
+    color: #fff
+}
+
 .reg {
     text-decoration: none;
     color: #4db5ff;
@@ -81,4 +73,92 @@
 
 .reg:hover {
     color: white
+}
+
+
+.input-group {
+    position: relative;
+}
+
+.visibility-toggle {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    /* background-color: #000; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    /* transform: translateX(30px); */
+}
+
+.test-label {
+    position: absolute;
+    left: 15px;
+    color: #000;
+    pointer-events: none;
+    top: -2px;
+    transform: translateY(15px);
+    font-size: 18px;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.5;
+}
+
+.input {
+
+    border-bottom: 1px solid white;
+    border-radius: 10px;
+    padding: 15px;
+    width: 300px;
+    border: none;
+    margin-bottom: 5px;
+
+}
+
+.input::placeholder {
+    color: rgb(175, 175, 175);
+}
+
+.input:focus,
+.input:valid {
+    outline: none;
+    /* border: 1.5px solid #fff; */
+}
+
+.input:focus~.test-label,
+input:valid~.test-label {
+    transform: translateX(-10%) translateY(-50%) scale(0.9);
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.2rem;
+    color: #000;
+    border: 0.8px solid rgba(128, 128, 128, 0.343);
+    opacity: 1;
+    /* box-shadow: 3px 10px 20px 0px rgba(35, 100, 210, 0.3); */
+}
+
+
+.svg-icon-logo {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.svg-icon-logo-hidden {
+    opacity: 0;
+}
+
+
+@media screen and (max-width: 1600px) {
+    .header-text-second {
+        padding-left: 110px;
+        margin-right: 0;
+    }
+
+    .user-test-block {
+        margin-right: 70px;
+    }
 }

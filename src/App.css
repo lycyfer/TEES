@@ -28,3 +28,21 @@ a {
   max-width: 1400px;
   margin: 0 auto;
 }
+
+@media screen and (max-width: 1600px) {
+  .container {
+    width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    width: 1000px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    width: 800px;
+  }
+}

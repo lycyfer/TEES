@@ -3,25 +3,11 @@ import { store } from "../../redux/store"
 import './singleCartProduct.css'
 import { decreaseCartProductCount, increaseCartProductCount, removeProductFromCart } from "../../products/productSlice";
 
-/**
- * Компонент SingleCartProduct, который отвечает за отображение информации о товаре в корзине.
- * @module SingleCartProduct
- */
-
-/**
- * @function
- * @name SingleCartProduct
- * @description Функция-компонент, которая рендерит информацию о товаре в корзине.
- * @param {string} id - Идентификатор товара.
- * @returns {JSX.Element} Возвращает JSX элемент, представляющий информацию о товаре в корзине.
- */
-
 const SingleCartProduct = ({ id, currentSize, index }) => {
     const dispatch = useDispatch();
-    // const cartProducts = useSelector((store) => store.productsState.cartProducts);
-    // const cartProduct = cartProducts.find((item) => item.id === id);
     const cartProducts = useSelector((store) => store.productsState.cartProducts);
     const cartProduct = cartProducts[index];
+
     console.log(index)
     if (!cartProduct || !cartProduct.fields) {
         return <div>Product not found</div>;
@@ -48,7 +34,11 @@ const SingleCartProduct = ({ id, currentSize, index }) => {
             <div className="singleCartProduct-cart-info">
                 <div className="singleCartProduct-item-name">{name}</div>
                 <p className="singleCartProduct-item-price">{price}</p>
-                <p>Size: {currentSize}</p>
+                {currentSize ? (
+                    <p>Size: {currentSize}</p>
+                ) : (
+                    <p></p>
+                )}
                 <button
                     onClick={handleRemoveFromCart}
                     className="singleCartProduct-item-btn">
